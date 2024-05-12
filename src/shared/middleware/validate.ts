@@ -1,18 +1,21 @@
-const express = require("express");
+import express from "express";
+import Joi from "joi";
+import { Handler } from "../types";
 
-function validate(schema,location="body") {
-  /**
-   * @param {express.Request} req
-   * @param {express.Response} res
-   * @param {express.NextFunction} next
-   */
+
+export type ValidateSchema={
+    body?:Joi.Schema,
+    params?:Joi.Schema,
+    query?:Joi.Schema
+}
+export function validate(schema:ValidateSchema):Handler {
   return function (req, res, next) {
     if(schema.body){
         const{error,value}=schema.body.validate(req.body);
         if(error){
             return res.status(400).json({error:error.details[0].message})
         }
-        req.location = value;
+        req.body = value;
     }
    
     if(schema.query){
@@ -20,16 +23,15 @@ function validate(schema,location="body") {
         if(error){
             return res.status(400).json({error:error.details[0].message})
         }
-        req.location = value;
+        req.query = value;
     }
     if(schema.params){
         const{error,value}=schema.params.validate(req.params);
         if(error){
             return res.status(400).json({error:error.details[0].message})
         }
-        req.location = value;
+        req.params = value;
     }
     next();
 }
 }
-module.exports = validate;

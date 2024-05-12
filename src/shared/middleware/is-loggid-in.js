@@ -3,11 +3,7 @@ const jwt= require('jsonwebtoken')
 const config = require("../config");
 const { UnauthorizedError } = require("../errors");
 
-/**
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- */
+
 
 function isLoggidIn(req,res,next){
     const {authorization}=req.headers;
