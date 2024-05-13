@@ -22,7 +22,15 @@ export const getRolesSchema:ValidateSchema={
     })
 }
 
+export const getRoleSchema:ValidateSchema={
+    params:Joi.object({
+        id:Joi.string().hex().length(24),
+
+    })
+}
+
 export const updateRoleSchema:ValidateSchema={
+    ...getRoleSchema,
     body:Joi.object({
         name:Joi.string().trim(),
         permission:Joi.array()

@@ -1,24 +1,24 @@
-import { Document,Schema,model } from "mongoose";
+import { Document, Schema, model } from "mongoose";
 import { Permission } from "../../shared/types";
 
-export interface IRole extends Document{
-    name:String;
-    permission:Permission[]
+export interface IRole extends Document {
+    name: string;
+    permission: Permission[]; 
 }
 
-const roleSchema=new Schema<IRole>({
-    name:{
-        type:String,
-        unique:true,
-        required:true,
+const roleSchema = new Schema<IRole>({
+    name: {
+        type: String,
+        unique: true,
+        required: true
     },
-    permission:{
-        type:[String],
-        required:true,
-    }
-},{
-    timestamps:true,
-    versionKey:false,
-}
-)
-export const Role=model('Role',roleSchema)
+    permission: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'Permission' 
+    }]
+}, {
+    timestamps: true,
+    versionKey: false
+});
+
+export const Role = model<IRole>('Role', roleSchema);
